@@ -12,6 +12,7 @@ export default function Login({ setUser, setActivePage }) {
     e.preventDefault();
     setLoading(true);
     setError('');
+    console.log("url",process.env.NEXT_PUBLIC_API_BASE_URL)
     try {
       const res = await axiosInstance.post('/auth/login', formData);
       const token = res.data.token;

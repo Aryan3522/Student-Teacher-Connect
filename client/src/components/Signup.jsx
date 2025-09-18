@@ -12,6 +12,7 @@ export default function Signup({ setActivePage }) {
     e.preventDefault();
     setLoading(true);
     setError('');
+    console.log("url",process.env.NEXT_PUBLIC_API_BASE_URL)
     try {
       await axiosInstance.post('/auth/register', formData);
       setLoading(false);
