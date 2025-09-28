@@ -13,7 +13,7 @@ function AssignmentDetailsModal({ assignment, isOpen, onClose }) {
     >
       <div
         className="bg-white dark:bg-gray-800 rounded-lg max-w-3xl max-h-[80vh] w-auto h-auto overflow-auto p-6 shadow-lg"
-        onClick={(e) => e.stopPropagation()} // Prevent modal close on inner content click
+        onClick={(e) => e.stopPropagation()}
       >
         <h2 id="assignment-details-title" className="text-2xl font-bold mb-4">
           {assignment.title}
@@ -55,11 +55,11 @@ function AssignmentsList({ assignments }) {
   }
 
   // Fixed card size styles
-  const cardStyle = "max-w-xs min-h-[260px] p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow flex flex-col justify-between";
+  const cardStyle = "w-[500px] p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow flex flex-col justify-between";
 
   return (
     <>
-      <div className="flex flex-wrap gap-6">
+      <div className="flex flex-wrap gap-6 justify-center">
         {assignments.map((a) => (
           <div
             key={a._id}

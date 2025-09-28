@@ -98,9 +98,9 @@
 
 // export default router;
 import express from 'express';
-import mongoose from 'mongoose';
 import Assignment from '../models/Assignment.js';
 import jwt from 'jsonwebtoken';
+import { createAssignments, getAllAssignments } from '../controllers/assignments.js';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'yoursecret';
@@ -120,38 +120,41 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// POST create assignment (teachers only)
-router.post('/', authMiddleware, async (req, res) => {
-  if (req.user.role !== 'teacher') {
-    return res.status(403).json({ message: 'Forbidden: teachers only' });
-  }
-  const { title, description, deadline, subject, assignedTo } = req.body;
-  try {
-    const assignment = new Assignment({
-      title,
-      description,
-      deadline,
-      subject,
-      createdBy: req.user.userId,
-      assignedTo: assignedTo || [], // Optional array of student IDs
-    });
-    await assignment.save();
-    res.status(201).json({ message: 'Assignment created' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error creating assignment', error: err.message });
-  }
-});
+// // POST create assignment (teachers only)
+// router.post('/', authMiddleware, async (req, res) => {
+//   if (req.user.role !== 'teacher') {
+//     return res.status(403).json({ message: 'Forbidden: teachers only' });
+//   }
+//   const { title, description, deadline, subject, assignedTo } = req.body;
+//   try {
+//     const assignment = new Assignment({
+//       title,
+//       description,
+//       deadline,
+//       subject,
+//       createdBy: req.user.userId,
+//       assignedTo: assignedTo || [], 
+//     });
+//     await assignment.save();
+//     res.status(201).json({ message: 'Assignment created' });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error creating assignment', error: err.message });
+//   }
+// });
+// // GET all assignments (for all users)
+// router.get('/', authMiddleware, async (req, res) => {
+//   try {
+//     const assignments = await Assignment.find()
+//       .populate('createdBy', 'username role')
+//       .exec();
+//     res.json(assignments);
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error fetching assignments', error: err.message });
+//   }
+// });
 
-// GET all assignments (for all users)
-router.get('/', authMiddleware, async (req, res) => {
-  try {
-    const assignments = await Assignment.find()
-      .populate('createdBy', 'username role')
-      .exec();
-    res.json(assignments);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching assignments', error: err.message });
-  }
-});
+router.post('/', authMiddleware, createAssignments);
+
+router.get('/', authMiddleware, getAllAssignments);
 
 export default router;

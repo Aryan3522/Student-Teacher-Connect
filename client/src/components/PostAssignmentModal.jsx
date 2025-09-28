@@ -26,7 +26,7 @@ export default function PostAssignmentModal({ isOpen, onOpenChange, teacherToken
       setLoading(false);
       onOpenChange(false);
       setFormData({ title: '', subject: '', deadline: '', description: '' });
-      if (onAssignmentPosted) onAssignmentPosted();  // Refresh assignments
+      if (onAssignmentPosted) onAssignmentPosted();
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || 'Failed to post assignment');

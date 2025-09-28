@@ -12,16 +12,17 @@ export default function Login({ setUser, setActivePage }) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    console.log("url",process.env.NEXT_PUBLIC_API_BASE_URL)
     try {
       const res = await axiosInstance.post('/auth/login', formData);
       const token = res.data.token;
-      // Save token & user info
+      const username = res.data.username;
+      console.log(username)
       localStorage.setItem('token', token);
-      const payload = JSON.parse(atob(token.split('.')[1])); // decode JWT payload
+      localStorage.setItem('username', username);
+      const payload = JSON.parse(atob(token.split('.')[1]));
       setUser({ token, username: payload.username, role: payload.role, userId: payload.userId });
       setLoading(false);
-      setActivePage('assignments'); // redirect on success
+      setActivePage('assignments');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
       setLoading(false);

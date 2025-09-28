@@ -1,3 +1,4 @@
+import { Delete, Edit, Trash } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 export default function TeachersAssignments({ assignments }) {
@@ -14,20 +15,21 @@ export default function TeachersAssignments({ assignments }) {
     return acc;
   }, {});
 
-  const cardStyle = `
-    max-w-xs p-4 bg-warm-beige dark:bg-deep-teal
-    rounded-lg shadow-md hover:shadow-lg transition-shadow
-    cursor-pointer flex flex-col justify-between
-  `;
+  // const cardStyle = `max-w-[500px] p-4 bg-warm-beige dark:bg-deep-teal
+  //   rounded-lg shadow-md hover:shadow-lg transition-shadow
+  //   cursor-pointer flex flex-col justify-between
+  // `;
+  // const cardStyle = "max-w-[500px] p-4 bg-warm-beige dark:bg-deep-teal rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer flex flex-col justify-between";
+const cardStyle = " max-w-[500px] min-h-[250px] p-4 bg-warm-beige dark:bg-deep-teal rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer flex flex-col justify-between";
 
   return (
-    <div>
+    <div className="flex flex-wrap justify-center gap-6">
       {Object.entries(grouped).map(([teacher, teacherAssignments]) => (
         <section key={teacher} className="mb-10">
           <h2 className="text-2xl font-semibold mb-4 text-dark-bg dark:text-soft-coral">
             Assignments by {teacher}
           </h2>
-          <div className="flex flex-wrap gap-6 justify-start">
+          <div className="flex flex-col  flex-wrap gap-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             {teacherAssignments.map((a) => (
               <div
                 key={a._id}
@@ -51,6 +53,13 @@ export default function TeachersAssignments({ assignments }) {
                 <p className="text-xs italic text-sage-green dark:text-soft-coral mt-auto">
                   Posted by: {teacher}
                 </p>
+                {/* Conditionally render Edit button */}
+                {a.createdBy?.username === localStorage.getItem("username") && (
+                  <div className="flex flex-row justify-around">
+                    <Edit className="text-blue-500"/>
+                    <Trash className="text-red-500"/>
+                  </div>
+                )}
               </div>
             ))}
           </div>

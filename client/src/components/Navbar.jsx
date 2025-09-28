@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PostAssignmentModal from './PostAssignmentModal.jsx';
-import { Menu } from 'lucide-react'; // Using lucide-react icons, you can install via npm or replace with another hamburger icon
+import { Menu } from 'lucide-react';
 
 export default function Navbar({ user, setUser, activePage, setActivePage, fetchAssignments, onAssignmentPosted }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [teacher, setTeacher] = useState("Unknown");
 
   const handleLogout = () => {
     setUser(null);
-    setActivePage('assignments'); // Redirect to default page
+    setActivePage('assignments');
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setTeacher("")
     setMenuOpen(false);
   };
 
@@ -18,19 +21,28 @@ export default function Navbar({ user, setUser, activePage, setActivePage, fetch
       ? 'bg-blue-600 text-white border border-blue-600'
       : 'text-blue-600 border border-blue-600 hover:bg-blue-50';
   };
-
+  // On client only, update teacher from localStorage if available
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    if (username) {
+      setTeacher(username);
+    }else{
+      setTeacher("StuTech")
+    }
+  }, [user]);
   return (
     <>
       <nav className="flex items-center justify-between p-4 border-b bg-white dark:bg-gray-800 shadow-sm">
-        <div
+          <div
           className="text-2xl font-bold text-blue-600 cursor-pointer select-none"
           onClick={() => {
             setActivePage('assignments');
             setMenuOpen(false);
           }}
-        >
-          StuTeach
+          >
+          {teacher}
         </div>
+       
 
         {/* Hamburger & menu for small screens */}
         <div className="lg:hidden">
